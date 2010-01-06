@@ -13,12 +13,12 @@
  * The Original Code is BrowserPlus (tm).
  * 
  * The Initial Developer of the Original Code is Yahoo!.
- * Portions created by Yahoo! are Copyright (C) 2006-2008 Yahoo!.
+ * Portions created by Yahoo! are Copyright (C) 2006-2009 Yahoo!.
  * All Rights Reserved.
  * 
  * Contributor(s): 
- * ***** END LICENSE BLOCK ***** */
-
+ * ***** END LICENSE BLOCK *****
+ */
 /**
  * Written by Lloyd Hilaiel, on or around Fri May 18 17:06:54 MDT 2007 
  *
@@ -41,11 +41,8 @@ extern "C" {
 
 /**
  * Initialize the service, called once at service load time.
- * 
- * \param coreFunctionTable  pointer to a structure of pointers to BPC
- *                           functions that the service may call through into
- *                           BPCore.
- * \param parameterMap       TODO: DOCUMENT
+ * the pointer passed in points to a structure of points to BPC
+ * functions that the service may call through into BPCore.
  */
 typedef const BPCoreletDefinition * (*BPPInitializePtr)(
     const BPCFunctionTable * coreFunctionTable,
@@ -103,13 +100,13 @@ typedef void (*BPPDestroyPtr)(void * instance);
  *  function being invoked.
  *
  *  \param instance The same instance pointer that the service
- *                  returned to the BPPInitialize call.
+ *                  returned in the BPPAllocate call.
  *  \param functionName The name of the function being invoked
  *  \param tid The transaction id of this function invocation.  Should
  *             be passed by the service to BPCPostResultsFuncPtr
  *             or BPCPostErrorFuncPtr
  *  \param arguments The validated arguments to the function.  The service
- *                   is gauranteed that all defined arguments to the function
+ *                   is guaranteed that all defined arguments to the function
  *                   from the function description structure have been
  *                   checked, and that no unsupported arguments are present,
  *                   nor are required arguments missing.  This is always a

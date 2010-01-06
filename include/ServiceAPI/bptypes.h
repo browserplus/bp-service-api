@@ -13,12 +13,12 @@
  * The Original Code is BrowserPlus (tm).
  * 
  * The Initial Developer of the Original Code is Yahoo!.
- * Portions created by Yahoo! are Copyright (C) 2006-2008 Yahoo!.
+ * Portions created by Yahoo! are Copyright (C) 2006-2009 Yahoo!.
  * All Rights Reserved.
  * 
  * Contributor(s): 
- * ***** END LICENSE BLOCK ***** */
-
+ * ***** END LICENSE BLOCK *****
+ */
 /*
  * Written by Lloyd Hilaiel, on or around Fri May 18 17:06:54 MDT 2007 
  *

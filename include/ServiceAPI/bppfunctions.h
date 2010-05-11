@@ -49,11 +49,11 @@ extern "C" {
  * \param parameterMap       A map containing initialization parameters for
  *                           the service.  These parameters include:
  *
- *             'CoreletDirectory': The location on disk where the service
- *                 resides. 
+ *             'ServiceDirectory': The location on disk where the service
+ *             resides. 
  *                 
  */
-typedef const BPCoreletDefinition * (*BPPInitializePtr)(
+typedef const BPServiceDefinition * (*BPPInitializePtr)(
     const BPCFunctionTable * coreFunctionTable,
     const BPElement * parameterMap);
 
@@ -80,7 +80,6 @@ typedef void (*BPPShutdownPtr)(void);
  *              with browserplus.  In the case of a native local application
  *              interacting with browserplus it should be a URI with a
  *              method of 'bpclient' (i.e. bpclient://CLIENTIDENTIFIER').
- *        'corelet_dir' DEPRECATED, use service_dir instead.
  *        'service_dir' is an absolute path to the directory containing the
  *                   files distributed with the service.
  *        'data_dir' is a absolute path to where the service should store
@@ -151,7 +150,7 @@ typedef void (*BPPInvokePtr)(void * instance, const char * functionName,
  * \warning this is an exception to the ServiceAPI's memory contract,
  *          and will be fixed in a later version of the ServiceAPI
  */
-typedef const BPCoreletDefinition * (*BPPAttachPtr)(
+typedef const BPServiceDefinition * (*BPPAttachPtr)(
     unsigned int attachID, const BPElement * parameterMap);
 
 /**
@@ -160,13 +159,13 @@ typedef const BPCoreletDefinition * (*BPPAttachPtr)(
  */
 typedef void (*BPPDetachPtr)(unsigned int attachID);
 
-#define BPP_CORELET_API_VERSION 5
+#define BPP_SERVICE_API_VERSION 5
 
 typedef struct BPPFunctionTable_t 
 {
-    /** The version of the service API to which this service plugin is
-     *  written (use the BPP_CORELET_API_VERSION macro!) */ 
-    unsigned int coreletAPIVersion;
+    /** The version of the service API to which this service is
+     *  written (use the BPP_SERVICE_API_VERSION macro!) */ 
+    unsigned int serviceAPIVersion;
     BPPInitializePtr initializeFunc;
     BPPShutdownPtr shutdownFunc;
     BPPAllocatePtr allocateFunc;

@@ -23,7 +23,7 @@
 /**
  * Written by Lloyd Hilaiel, on or around Fri May 18 17:06:54 MDT 2007 
  *
- * BPC* functions are provided by BPCore and called by the corelet 
+ * BPC* functions are provided by BPCore and called by the service
  */
 
 #ifndef __BPCFUNCTIONS_H__
@@ -55,7 +55,7 @@ typedef void (*BPCPostResultsFuncPtr)(unsigned int tid,
  * service function may be called.  This indicates the completion of the
  * function invocation or transaction.
  *
- * \param tid a transaction id passed into the corelet via the invocation
+ * \param tid a transaction id passed into the service via the invocation
  *        of a BPPFunctionPtr
  * \param error A string representation of an error.  If NULL, a generic
  *              error will be raised.  These strings should be camel

@@ -78,27 +78,28 @@ typedef void (*BPPShutdownPtr)(void);
  *                 calls to invoke and destroy.  This is an output parameter
  *                 that services may use to store instance-specific
  *                 context.
- * \param contextMap A map containing session specific context.
- *        'uri' is a string containing a URI of the current client. This is
+ * \param uri   a UTF8 encoded string containing a URI of the current client. This is
  *              usually the full URL to the webpage that is interacting
  *              with browserplus.  In the case of a native local application
  *              interacting with browserplus it should be a URI with a
  *              method of 'bpclient' (i.e. bpclient://CLIENTIDENTIFIER').
- *        'service_dir' is an absolute path to the directory containing the
- *                   files distributed with the service.
- *        'data_dir' is a absolute path to where the service should store
- *                   any data that needs to persist.
- *        'temp_dir' is a directory that may be used for temporary
- *                   data.  it will be unique for every instance, and will
- *                   be purged when the instance is deallocated.
- *        'locale' The locale of the end user to which strings, if any,
- *                 should be localized.
- *        'userAgent' The client user-agent string.
- *        'clientPid' The process ID of the client.
+ * \param serviceDir is an absolute path to the directory containing the
+ *              files distributed with the service.
+ * \param dataDir is an absolute path to where the service should store
+ *                any data that needs to persist.
+ * \param temp_dir is the path to a directory that may be used for
+ *                temporary data.  it will be unique for every instance, and will
+ *                be purged when the instance is deallocated.
+ * \param locale The locale of the end user to which strings, if any, should be localized.
+ * \param userAgent The client user-agent as a UTF8 encoded string.
+ * \param clientPid The process ID of the client program/browser.
  *
  * \return zero on success, non-zero on failure
  */
-typedef int (*BPPAllocatePtr)(void ** instance, const BPElement * contextMap);
+typedef int (*BPPAllocatePtr)(
+    void ** instance, const BPString uri, const BPPath * serviceDir,
+    const BPPath * dataDir, const BPPath * tempDir, const BPString locale,,
+    const BPString userAgent, int clientPid);
     
 /**
  * Destroy a service instance allocated with BPPAllocate.

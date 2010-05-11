@@ -110,7 +110,7 @@ typedef void (*BPPDestroyPtr)(void * instance);
 /**
  *  Invoke a service method.
  *
- *  \param instance An instance pointer returned from a BPPAllocate call.
+ *  \param instance The instance pointer returned from a BPPAllocate call.
  *  \param functionName The name of the function being invoked
  *  \param tid The transaction id of this function invocation.  Should
  *             be passed by the service to BPCPostResultsFuncPtr
@@ -125,6 +125,14 @@ typedef void (*BPPDestroyPtr)(void * instance);
 typedef void (*BPPInvokePtr)(void * instance, const char * functionName,
                              unsigned int tid, const BPElement * arguments);
 
+/**
+ *  Cancel a transaction previously started by calling BPPInvokePtr()
+ *
+ *  \param instance The instance pointer returned from a BPPAllocate call.
+ *  \param tid The transaction id of this function invocation.
+ */
+typedef void (*BPPCancelPtr)(void * instance, unsigned int tid);
+
 
 #define BPP_SERVICE_API_VERSION 5
 
@@ -138,6 +146,7 @@ typedef struct BPPFunctionTable_t
     BPPAllocatePtr allocateFunc;
     BPPDestroyPtr destroyFunc;
     BPPInvokePtr invokeFunc;
+    BPPCancelPtr cancelFunc;
 } BPPFunctionTable;
 
 /**

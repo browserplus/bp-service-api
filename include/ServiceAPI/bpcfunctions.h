@@ -141,6 +141,23 @@ typedef unsigned int (*BPCPromptUserFuncPtr)(
     void * context);
 
 /**
+ * The signature of a callback as used by the BPCInvokeOnMainThreadPtr function.
+ */
+typedef void (*BPCMainThreadCallbackPtr)(void);
+
+/**
+ * A thread safe way to request that BrowserPlus invoke your service from the
+ * "main" thread, which is the thread which invokes all functions on the service.
+ *
+ * This is a mechanism to allow a service to safely use the event pump of the
+ * parent process (A BrowserPlus "service" process).
+ *
+ * There is no gaurantee that a callback will be delivered (especially in the
+ * shutdown case).
+ */
+typedef void (*BPCInvokeOnMainThreadPtr)(BPCMainThreadCallbackPtr cb);
+
+/**
  * A table containing function pointers for functions available to be
  * called by services implemented by BrowserPlus.
  */
@@ -150,6 +167,7 @@ typedef struct {
     BPCLogFuncPtr log;
     BPCInvokeCallBackFuncPtr invoke;
     BPCPromptUserFuncPtr prompt;
+    BPCInvokeOnMainThreadPtr invokeOnMainThread;
 } BPCFunctionTable;
 
 #ifdef __cplusplus

@@ -160,7 +160,7 @@ typedef const BPCoreletDefinition * (*BPPAttachPtr)(
  */
 typedef void (*BPPDetachPtr)(unsigned int attachID);
 
-#define BPP_CORELET_API_VERSION 4
+#define BPP_CORELET_API_VERSION 5
 
 typedef struct BPPFunctionTable_t 
 {

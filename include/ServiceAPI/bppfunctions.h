@@ -42,20 +42,27 @@ extern "C" {
 
 /**
  * Initialize the service, called once at service load time.
+ *
  * 
  * \param coreFunctionTable  pointer to a structure of pointers to BPC
  *                           functions that the service may call through into
  *                           BPCore.
- * \param parameterMap       A map containing initialization parameters for
- *                           the service.  These parameters include:
- *
- *             'ServiceDirectory': The location on disk where the service
- *             resides. 
+ * \param serviceDir         The directory in which the service being initialized
+ *                           is installed.
+ * \param dependentDir       In the case of a provider service, the path to the 
+ *                           dependent service being loaded.
+ * \param dependentParams    In the case of a provider service, arguments from
+ *                           the manifest.json of the dependent service.
  *                 
+ * \return  A service definition which describes the interface of the
+ *          service.  This memory should not be freed until the service
+ *          is shutdown.
  */
 typedef const BPServiceDefinition * (*BPPInitializePtr)(
     const BPCFunctionTable * coreFunctionTable,
-    const BPElement * parameterMap);
+    const BPPath * serviceDir,
+    const BPPath * dependentDir,
+    const BPElement * dependentParams);
 
 /**
  * Shutdown the service.  Called once at service unload time.
@@ -71,9 +78,6 @@ typedef void (*BPPShutdownPtr)(void);
  *                 calls to invoke and destroy.  This is an output parameter
  *                 that services may use to store instance-specific
  *                 context.
- * \param attachID The ID of the attachment this is associated with for
- *                 provider services (set in BPPAttach call), for
- *                 standalone services, always zero and may be ignored.
  * \param contextMap A map containing session specific context.
  *        'uri' is a string containing a URI of the current client. This is
  *              usually the full URL to the webpage that is interacting
@@ -94,8 +98,7 @@ typedef void (*BPPShutdownPtr)(void);
  *
  * \return zero on success, non-zero on failure
  */
-typedef int (*BPPAllocatePtr)(void ** instance, unsigned int attachID,
-                              const BPElement * contextMap);
+typedef int (*BPPAllocatePtr)(void ** instance, const BPElement * contextMap);
     
 /**
  * Destroy a service instance allocated with BPPAllocate.
@@ -122,42 +125,6 @@ typedef void (*BPPDestroyPtr)(void * instance);
 typedef void (*BPPInvokePtr)(void * instance, const char * functionName,
                              unsigned int tid, const BPElement * arguments);
 
-/**
- * The "attach" function supports interpreter services.  These are services
- * which can be used by other services.  The primary types of services
- * that will be interested in this functionality are high level language
- * interpretation services which allow the authoring of services in
- * non-compiled languages.
- *
- * For most services Attach and Detach may be NULL which indicates that the
- * service may not be "used" by other services.
- *
- * Attach is called after BPPInitialize at the time the dependant service
- * is itself initialize.  Multiple dependant services may use the same
- * provider service, and the provider service may also expose functions
- * directly.  Multiple attached dependant services may be disambiguated
- * using the "attachID".  At the time an instance of a attached service
- * is instantiated, the attachID is passed in.
- *
- * The parameters map contains a set of parameters which describe the
- * dependant service.  These parameters are both set by BrowserPlus, and
- * extracted from the manifest of the dependant service.  
- *
- * The returned service definition describes the interface of the
- * dependent service.  This will likely be dynamically allocated
- * memory, which should not be freed until detach is called
- *
- * \warning this is an exception to the ServiceAPI's memory contract,
- *          and will be fixed in a later version of the ServiceAPI
- */
-typedef const BPServiceDefinition * (*BPPAttachPtr)(
-    unsigned int attachID, const BPElement * parameterMap);
-
-/**
- * At the time the last instance of a dependant service is deleted, detach
- * is called.  
- */
-typedef void (*BPPDetachPtr)(unsigned int attachID);
 
 #define BPP_SERVICE_API_VERSION 5
 
@@ -171,8 +138,6 @@ typedef struct BPPFunctionTable_t
     BPPAllocatePtr allocateFunc;
     BPPDestroyPtr destroyFunc;
     BPPInvokePtr invokeFunc;
-    BPPAttachPtr attachFunc;
-    BPPDetachPtr detachFunc;    
 } BPPFunctionTable;
 
 /**

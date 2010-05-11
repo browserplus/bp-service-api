@@ -13,12 +13,13 @@
  * The Original Code is BrowserPlus (tm).
  * 
  * The Initial Developer of the Original Code is Yahoo!.
- * Portions created by Yahoo! are Copyright (C) 2006-2009 Yahoo!.
- * All Rights Reserved.
+ * Portions created by Yahoo! are Copyright (c) 2009 Yahoo! Inc.
+ * All rights reserved.
  * 
  * Contributor(s): 
  * ***** END LICENSE BLOCK *****
  */
+
 /**
  * Written by Lloyd Hilaiel, on or around Fri May 18 17:06:54 MDT 2007 
  *
@@ -41,17 +42,25 @@ extern "C" {
 
 /**
  * Initialize the service, called once at service load time.
- * the pointer passed in points to a structure of points to BPC
- * functions that the service may call through into BPCore.
+ * 
+ * \param coreFunctionTable  pointer to a structure of pointers to BPC
+ *                           functions that the service may call through into
+ *                           BPCore.
+ * \param parameterMap       A map containing initialization parameters for
+ *                           the service.  These parameters include:
+ *
+ *             'CoreletDirectory': The location on disk where the service
+ *                 resides. 
+ *                 
  */
 typedef const BPCoreletDefinition * (*BPPInitializePtr)(
     const BPCFunctionTable * coreFunctionTable,
     const BPElement * parameterMap);
 
 /**
- * shut down the service.  Called once at service unload time,
- *  all allocated instances will have been deleted by the time
- *  this function is called.
+ * Shutdown the service.  Called once at service unload time.
+ * All allocated instances will have been deleted by the time
+ * this function is called.
  */
 typedef void (*BPPShutdownPtr)(void);
 
@@ -59,8 +68,8 @@ typedef void (*BPPShutdownPtr)(void);
  * Allocate a new service instance.  
  *
  * \param instance A void pointer that will be passed back to subsequent
- *                 calls into this instance.  This is an output parameter
- *                 that services may use to store instance specific
+ *                 calls to invoke and destroy.  This is an output parameter
+ *                 that services may use to store instance-specific
  *                 context.
  * \param attachID The ID of the attachment this is associated with for
  *                 provider services (set in BPPAttach call), for
@@ -91,16 +100,15 @@ typedef int (*BPPAllocatePtr)(void ** instance, unsigned int attachID,
     
 /**
  * Destroy a service instance allocated with BPPAllocate.
+ * 
+ *  \param instance An instance pointer returned from a BPPAllocate call.
  */
 typedef void (*BPPDestroyPtr)(void * instance);    
 
 /**
- *  All callable functions exposed by the service are invoked by BrowserPlus
- *  by calling the invoke function and passing as a parameter the name of the
- *  function being invoked.
+ *  Invoke a service method.
  *
- *  \param instance The same instance pointer that the service
- *                  returned in the BPPAllocate call.
+ *  \param instance An instance pointer returned from a BPPAllocate call.
  *  \param functionName The name of the function being invoked
  *  \param tid The transaction id of this function invocation.  Should
  *             be passed by the service to BPCPostResultsFuncPtr

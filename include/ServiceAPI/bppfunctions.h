@@ -87,7 +87,7 @@ typedef void (*BPPShutdownPtr)(void);
  *              files distributed with the service.
  * \param dataDir is an absolute path to where the service should store
  *                any data that needs to persist.
- * \param temp_dir is the path to a directory that may be used for
+ * \param tempDir is the path to a directory that may be used for
  *                temporary data.  it will be unique for every instance, and will
  *                be purged when the instance is deallocated.
  * \param locale The locale of the end user to which strings, if any, should be localized.
@@ -134,6 +134,28 @@ typedef void (*BPPInvokePtr)(void * instance, const char * functionName,
  */
 typedef void (*BPPCancelPtr)(void * instance, unsigned int tid);
 
+/**
+ * A callback invoked exactly once immediately after a service is installed
+ * on disk.  This is an opportunity for a service to perform any one-time setup.
+ *
+ * \param serviceDir is an absolute path to the directory containing the
+ *              files distributed with the service.
+ * \param dataDir is an absolute path to where the service should store
+ *                any data that needs to persist.
+ */
+typedef int (*BPPInstallPtr)(const BPPath * serviceDir, const BPPath * dataDir);
+
+/**
+ * A callback invoked exactly once immediately before a service is purged from
+ * disk.  This is an opportunity for a service to perform any one-time cleanup.
+ *
+ * \param serviceDir is an absolute path to the directory containing the
+ *              files distributed with the service.
+ * \param dataDir is an absolute path to where the service should store
+ *                any data that needs to persist.
+ */
+typedef int (*BPPUninstallPtr)(const BPPath * serviceDir, const BPPath * dataDir);
+
 
 #define BPP_SERVICE_API_VERSION 5
 
@@ -148,6 +170,8 @@ typedef struct BPPFunctionTable_t
     BPPDestroyPtr destroyFunc;
     BPPInvokePtr invokeFunc;
     BPPCancelPtr cancelFunc;
+    BPPInstallPtr installFunc;
+    BPPUninstallPtr installFunc;
 } BPPFunctionTable;
 
 /**

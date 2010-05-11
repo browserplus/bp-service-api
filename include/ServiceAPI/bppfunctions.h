@@ -60,8 +60,8 @@ extern "C" {
  */
 typedef const BPServiceDefinition * (*BPPInitializePtr)(
     const BPCFunctionTable * coreFunctionTable,
-    const BPPath * serviceDir,
-    const BPPath * dependentDir,
+    const BPPath serviceDir,
+    const BPPath dependentDir,
     const BPElement * dependentParams);
 
 /**
@@ -97,8 +97,8 @@ typedef void (*BPPShutdownPtr)(void);
  * \return zero on success, non-zero on failure
  */
 typedef int (*BPPAllocatePtr)(
-    void ** instance, const BPString uri, const BPPath * serviceDir,
-    const BPPath * dataDir, const BPPath * tempDir, const BPString locale,,
+    void ** instance, const BPString uri, const BPPath serviceDir,
+    const BPPath dataDir, const BPPath tempDir, const BPString locale,,
     const BPString userAgent, int clientPid);
     
 /**
@@ -143,7 +143,7 @@ typedef void (*BPPCancelPtr)(void * instance, unsigned int tid);
  * \param dataDir is an absolute path to where the service should store
  *                any data that needs to persist.
  */
-typedef int (*BPPInstallPtr)(const BPPath * serviceDir, const BPPath * dataDir);
+typedef int (*BPPInstallPtr)(const BPPath serviceDir, const BPPath dataDir);
 
 /**
  * A callback invoked exactly once immediately before a service is purged from
@@ -154,7 +154,7 @@ typedef int (*BPPInstallPtr)(const BPPath * serviceDir, const BPPath * dataDir);
  * \param dataDir is an absolute path to where the service should store
  *                any data that needs to persist.
  */
-typedef int (*BPPUninstallPtr)(const BPPath * serviceDir, const BPPath * dataDir);
+typedef int (*BPPUninstallPtr)(const BPPath serviceDir, const BPPath dataDir);
 
 
 #define BPP_SERVICE_API_VERSION 5

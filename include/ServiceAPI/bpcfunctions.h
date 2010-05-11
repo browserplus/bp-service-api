@@ -122,7 +122,7 @@ typedef void (*BPUserResponseCallbackFuncPtr)(
  *
  * \param tid a transaction id passed into the service via the invocation
  *        of a BPPFunctionPtr
- * \param utf8PathToHTMLDialog A utf8 string holding the absolute path
+ * \param pathToHTMLDialog A native "wide" string holding the absolute path
  *          to the dialog you wish to display.  
  * \param arguments The arguments to make available to the dialog
  *          via the BPDialog.args() call
@@ -135,7 +135,7 @@ typedef void (*BPUserResponseCallbackFuncPtr)(
  */
 typedef unsigned int (*BPCPromptUserFuncPtr)(
     unsigned int tid,
-    const char * utf8PathToHTMLDialog,
+    const BPPath pathToHTMLDialog,
     const BPElement * arguments,
     BPUserResponseCallbackFuncPtr responseCallback,
     void * context);
